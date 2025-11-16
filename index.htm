@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Приклад збереження у Firebase</title>
+</head>
+<body style="background-color:lightblue;">
+
+  <h1><font color=lime>Приклад роботи з Firebase</h1>
+  <h1><font color=blue>Заповніть форму</h1>
+  <form id="registrationForm">
+
+    <label for="name">Ім'я:</label><br>
+    <input type="name" id="name" name="name"><br><br>
+
+    <label for="surname">Прізвище:</label><br>
+    <input type="surname" id="surname" name="surname"><br><br>
+	
+	<label for="profession">Професія:</label><br>
+    <input type="profession" id="profession" name="profession"><br><br>
+	
+    <button type="button" onclick="sendData()">Зберегти у базу</button>
+  </form>
+  <br>
+  <br>
+  <div id="message">Log</div>
+
+  <script>
+    function sendData() {
+      const form = document.getElementById('registrationForm');
+      const name = form.name.value;
+      const surname = form.surname.value;
+	  const profession = form.profession.value;
+      const messageDiv = document.getElementById('message');
+
+       fetch('https://kn-23-1proj-default-rtdb.firebaseio.com/MyNewData/' + 
+		 surname + '.json?auth=szKA7RcCUOmA9ziBtA47nYbBFaMiWNW4cKNcib7I', {
+         method: 'PUT',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ 
+             Name: name,
+             Surname: surname,
+             Profession: profession
+         })
+       })
+       .then(response => response.json())
+       .then(data => {
+           messageDiv.textContent = 'Пішло в базу: ' + JSON.stringify(data);
+       })
+       .catch(error => {
+         messageDiv.textContent = error;
+       });
+
+    }
+  </script>
+</body>
+</html>
+
